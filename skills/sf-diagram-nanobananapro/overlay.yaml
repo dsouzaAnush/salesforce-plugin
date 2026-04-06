@@ -1,0 +1,12 @@
+source:
+  repo_path: "/Users/anushdsouza/Developer/work/salesforce-skills"
+  skill: "sf-diagram-nanobananapro"
+  sync_mode: "local-copy"
+
+plugin:
+  family: "salesforce"
+  managed_by_plugin: false
+  status: "synced"
+
+routing:
+  priority: "medium"

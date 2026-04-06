@@ -1,0 +1,10 @@
+interface:
+  display_name: "Salesforce Permissions"
+  short_description: "Permission Set analysis, hierarchy viewer, and access auditin..."
+  icon_small: "./assets/salesforce-logo.png"
+  icon_large: "./assets/salesforce-logo.png"
+  brand_color: "#0176D3"
+  default_prompt: "Use $sf-permissions for help with Salesforce Permissions work."
+
+policy:
+  allow_implicit_invocation: true

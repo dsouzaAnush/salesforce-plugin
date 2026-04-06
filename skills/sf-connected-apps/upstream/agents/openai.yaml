@@ -1,0 +1,10 @@
+interface:
+  display_name: "Salesforce Connected Apps"
+  short_description: "Salesforce Connected Apps and OAuth configuration with 120-po..."
+  icon_small: "./assets/salesforce-logo.png"
+  icon_large: "./assets/salesforce-logo.png"
+  brand_color: "#0176D3"
+  default_prompt: "Use $sf-connected-apps for help with Salesforce Connected Apps work."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,43 @@
+{
+  "name": "salesforce-plugin",
+  "version": "0.1.0",
+  "description": "Plugin wrapper for Salesforce coding skills, synced from the sf-skills upstream repository.",
+  "author": {
+    "name": "Jag Valaiyapathy",
+    "url": "https://github.com/Jaganpro"
+  },
+  "homepage": "https://github.com/Jaganpro/salesforce-plugin",
+  "repository": "https://github.com/Jaganpro/salesforce-plugin",
+  "license": "MIT",
+  "keywords": [
+    "salesforce",
+    "plugin",
+    "codex",
+    "claude-code",
+    "skills",
+    "apex",
+    "lwc",
+    "flow"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Salesforce Plugin",
+    "shortDescription": "Plugin wrapper around the upstream Salesforce skills library.",
+    "longDescription": "A dedicated plugin repo for Salesforce-focused coding agents. It syncs reusable sf-* skills from the upstream salesforce-skills repository and adds plugin-specific structure for future hooks, commands, agents, manifests, and routing.",
+    "developerName": "Jag Valaiyapathy",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/Jaganpro/salesforce-plugin",
+    "defaultPrompt": [
+      "Review this Apex class with Salesforce Plugin.",
+      "Help me choose the right Salesforce skill.",
+      "Sync the latest upstream Salesforce skills."
+    ],
+    "brandColor": "#0176D3",
+    "composerIcon": "./assets/salesforce-logo.png",
+    "logo": "./assets/salesforce-logo.png"
+  }
+}

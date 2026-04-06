@@ -1,0 +1,20 @@
+{
+  "name": "salesforce-plugin-local",
+  "interface": {
+    "displayName": "Salesforce Plugin Local"
+  },
+  "plugins": [
+    {
+      "name": "salesforce-plugin",
+      "source": {
+        "source": "local",
+        "path": "../.."
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

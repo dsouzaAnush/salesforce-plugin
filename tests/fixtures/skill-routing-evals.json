@@ -1,0 +1,42 @@
+[
+  {
+    "prompt": "Review this Apex trigger and update the .cls service class with bulk-safe tests.",
+    "expected_skill": "sf-apex"
+  },
+  {
+    "prompt": "Build a record-triggered flow for Opportunity and update the .flow-meta.xml definition.",
+    "expected_skill": "sf-flow"
+  },
+  {
+    "prompt": "Refactor this Salesforce LWC component and fix the .js and .html files.",
+    "expected_skill": "sf-lwc"
+  },
+  {
+    "prompt": "Pull the official help.salesforce.com docs for Omni-Channel routing and summarize the guidance.",
+    "expected_skill": "sf-docs"
+  },
+  {
+    "prompt": "Create a Snowflake Data Cloud connection, browse source objects, and test the connector setup.",
+    "expected_skill": "sf-datacloud-connect"
+  },
+  {
+    "prompt": "Create a Data Cloud data stream, inspect the DLO, and rerun the ingestion job.",
+    "expected_skill": "sf-datacloud-prepare"
+  },
+  {
+    "prompt": "Map Data Cloud data to canonical DMOs and configure identity resolution for unified profiles.",
+    "expected_skill": "sf-datacloud-harmonize"
+  },
+  {
+    "prompt": "Publish a Data Cloud segment, run a calculated insight, and count the audience members.",
+    "expected_skill": "sf-datacloud-segment"
+  },
+  {
+    "prompt": "List activation targets and create a data action for downstream Data Cloud delivery.",
+    "expected_skill": "sf-datacloud-act"
+  },
+  {
+    "prompt": "Run a hybrid Data Cloud search, describe the table, and inspect the search index.",
+    "expected_skill": "sf-datacloud-retrieve"
+  }
+]
