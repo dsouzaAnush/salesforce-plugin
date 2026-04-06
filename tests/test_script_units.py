@@ -90,11 +90,15 @@ def test_sync_helpers_prune_copy_and_report(tmp_path: Path, monkeypatch) -> None
     sync_script.remove_stale_skills({"sf-alpha"})
     assert not (local_skills / "sf-stale").exists()
 
-    sync_script.sync_skill(discovered[0], upstream_root)
+    sync_script.sync_skill(discovered[0], "https://github.com/dsouzaAnush/salesforce-skills")
     assert (local_skills / "sf-alpha" / "upstream" / "SKILL.md").is_file()
     assert (local_skills / "sf-alpha" / "overlay.yaml").is_file()
 
-    sync_script.write_sync_report(upstream_root, ["sf-alpha"])
+    sync_script.write_sync_report(
+        upstream_root,
+        "https://github.com/dsouzaAnush/salesforce-skills",
+        ["sf-alpha"],
+    )
     report = json.loads((generated_dir / "sync-report.json").read_text(encoding="utf-8"))
     assert report["skillCount"] == 1
     assert report["skills"] == ["sf-alpha"]

@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_UPSTREAM = Path("/Users/anushdsouza/Developer/work/salesforce-skills")
+DEFAULT_UPSTREAM_REPOSITORY = "https://github.com/dsouzaAnush/salesforce-skills"
 SKILLS_DIR = ROOT / "skills"
 GENERATED_DIR = ROOT / "generated"
 
@@ -20,10 +21,10 @@ def discover_upstream_skills(upstream_root: Path) -> list[Path]:
     return sorted(path for path in upstream_skills_dir.glob("sf-*") if path.is_dir())
 
 
-def write_overlay(skill_dir: Path, upstream_root: Path, skill_name: str) -> None:
+def write_overlay(skill_dir: Path, upstream_repository: str, skill_name: str) -> None:
     overlay = (
         "source:\n"
-        f'  repo_path: "{upstream_root}"\n'
+        f'  repo_path: "{upstream_repository}"\n'
         f'  skill: "{skill_name}"\n'
         '  sync_mode: "local-copy"\n'
         "\n"
@@ -38,7 +39,7 @@ def write_overlay(skill_dir: Path, upstream_root: Path, skill_name: str) -> None
     (skill_dir / "overlay.yaml").write_text(overlay, encoding="utf-8")
 
 
-def sync_skill(upstream_skill_dir: Path, upstream_root: Path) -> None:
+def sync_skill(upstream_skill_dir: Path, upstream_repository: str) -> None:
     skill_name = upstream_skill_dir.name
     plugin_skill_dir = SKILLS_DIR / skill_name
     upstream_dest = plugin_skill_dir / "upstream"
@@ -50,7 +51,7 @@ def sync_skill(upstream_skill_dir: Path, upstream_root: Path) -> None:
 
     shutil.copytree(upstream_skill_dir, upstream_dest)
     shutil.copy2(upstream_dest / "SKILL.md", plugin_skill_dir / "SKILL.md")
-    write_overlay(plugin_skill_dir, upstream_root, skill_name)
+    write_overlay(plugin_skill_dir, upstream_repository, skill_name)
 
 
 def remove_stale_skills(expected_skill_names: set[str]) -> None:
@@ -59,10 +60,11 @@ def remove_stale_skills(expected_skill_names: set[str]) -> None:
             shutil.rmtree(skill_dir)
 
 
-def write_sync_report(upstream_root: Path, skills: list[str]) -> None:
+def write_sync_report(upstream_root: Path, upstream_repository: str, skills: list[str]) -> None:
     GENERATED_DIR.mkdir(exist_ok=True)
     report = {
-        "upstream": str(upstream_root),
+        "upstreamLocalPath": str(upstream_root),
+        "upstreamRepository": upstream_repository,
         "skillCount": len(skills),
         "skills": skills,
     }
@@ -79,6 +81,11 @@ def main() -> None:
         default=str(DEFAULT_UPSTREAM),
         help="Path to the upstream salesforce-skills repo",
     )
+    parser.add_argument(
+        "--upstream-repository",
+        default=DEFAULT_UPSTREAM_REPOSITORY,
+        help="Public repository URL for the upstream salesforce-skills repo",
+    )
     args = parser.parse_args()
 
     upstream_root = Path(args.upstream).resolve()
@@ -92,9 +99,9 @@ def main() -> None:
     SKILLS_DIR.mkdir(exist_ok=True)
     remove_stale_skills({path.name for path in skill_dirs})
     for skill_dir in skill_dirs:
-        sync_skill(skill_dir, upstream_root)
+        sync_skill(skill_dir, args.upstream_repository)
 
-    write_sync_report(upstream_root, [path.name for path in skill_dirs])
+    write_sync_report(upstream_root, args.upstream_repository, [path.name for path in skill_dirs])
     print(f"Synced {len(skill_dirs)} skills from {upstream_root}")
 
 

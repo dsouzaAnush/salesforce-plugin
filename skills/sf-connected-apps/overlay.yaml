@@ -1,5 +1,5 @@
 source:
-  repo_path: "/Users/anushdsouza/Developer/work/salesforce-skills"
+  repo_path: "https://github.com/dsouzaAnush/salesforce-skills"
   skill: "sf-connected-apps"
   sync_mode: "local-copy"
 
