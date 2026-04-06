@@ -14,10 +14,10 @@ Salesforce Industries DataPack deployment automation using Vlocity Build. Export
 
 ```bash
 # Install as part of sf-skills
-npx skills add Jaganpro/sf-skills
+npx skills add dsouzaAnush/salesforce-skills
 
 # Or install just this skill
-npx skills add Jaganpro/sf-skills --skill sf-vlocity-build-deploy
+npx skills add dsouzaAnush/salesforce-skills --skill sf-vlocity-build-deploy
 ```
 
 ## Quick Start

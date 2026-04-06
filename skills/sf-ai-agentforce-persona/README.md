@@ -100,7 +100,7 @@ Each file carries its own version in YAML frontmatter. See `CREDITS.md` for the 
 
 ## Upstream Sync
 
-This skill is maintained in [jaganpro/sf-skills](https://github.com/Jaganpro/sf-skills) and adapted from [cascadi/sf-ai-agentforce-persona](https://github.com/cascadi/sf-ai-agentforce-persona). The local copy preserves the sf-skills directory shape (`assets/`, `references/`, `CREDITS.md`) while incorporating upstream framework and workflow updates.
+This skill is maintained in [jaganpro/sf-skills](https://github.com/dsouzaAnush/salesforce-skills) and adapted from [cascadi/sf-ai-agentforce-persona](https://github.com/cascadi/sf-ai-agentforce-persona). The local copy preserves the sf-skills directory shape (`assets/`, `references/`, `CREDITS.md`) while incorporating upstream framework and workflow updates.
 
 ## Sources
 

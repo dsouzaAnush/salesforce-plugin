@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "description": "Plugin wrapper for Salesforce coding skills, synced from the sf-skills upstream repository.",
   "author": {
-    "name": "Jag Valaiyapathy",
-    "url": "https://github.com/Jaganpro"
+    "name": "Anush Dsouza",
+    "url": "https://github.com/dsouzaAnush"
   },
-  "homepage": "https://github.com/Jaganpro/salesforce-plugin",
-  "repository": "https://github.com/Jaganpro/salesforce-plugin",
+  "homepage": "https://github.com/dsouzaAnush/salesforce-plugin",
+  "repository": "https://github.com/dsouzaAnush/salesforce-plugin",
   "license": "MIT",
   "keywords": [
     "salesforce",
@@ -24,13 +24,13 @@
     "displayName": "Salesforce Plugin",
     "shortDescription": "Plugin wrapper around the upstream Salesforce skills library.",
     "longDescription": "A dedicated plugin repo for Salesforce-focused coding agents. It syncs reusable sf-* skills from the upstream salesforce-skills repository and adds plugin-specific structure for future hooks, commands, agents, manifests, and routing.",
-    "developerName": "Jag Valaiyapathy",
+    "developerName": "Anush Dsouza",
     "category": "Developer Tools",
     "capabilities": [
       "Read",
       "Write"
     ],
-    "websiteURL": "https://github.com/Jaganpro/salesforce-plugin",
+    "websiteURL": "https://github.com/dsouzaAnush/salesforce-plugin",
     "defaultPrompt": [
       "Review this Apex class with Salesforce Plugin.",
       "Help me choose the right Salesforce skill.",

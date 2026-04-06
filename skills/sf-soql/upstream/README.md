@@ -14,10 +14,10 @@ Salesforce SOQL query generation, optimization, and analysis skill with 100-poin
 
 ```bash
 # Install as part of sf-skills
-npx skills add Jaganpro/sf-skills
+npx skills add dsouzaAnush/salesforce-skills
 
 # Or install just this skill
-npx skills add Jaganpro/sf-skills --skill sf-soql
+npx skills add dsouzaAnush/salesforce-skills --skill sf-soql
 ```
 
 ## Quick Start

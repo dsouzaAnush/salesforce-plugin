@@ -307,4 +307,4 @@ public class JsonParserAction {
 
 ---
 
-*Consolidated from @kunello's [PR #20](https://github.com/Jaganpro/sf-skills/pull/20) research on Agent Script Recipes action configuration patterns.*
+*Consolidated from @kunello's [PR #20](https://github.com/dsouzaAnush/salesforce-skills/pull/20) research on Agent Script Recipes action configuration patterns.*

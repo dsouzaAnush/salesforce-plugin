@@ -15,10 +15,10 @@ Comprehensive Salesforce DevOps automation using sf CLI v2. Validate, deploy, ve
 
 ```bash
 # Install as part of sf-skills
-npx skills add Jaganpro/sf-skills
+npx skills add dsouzaAnush/salesforce-skills
 
 # Or install just this skill
-npx skills add Jaganpro/sf-skills --skill sf-deploy
+npx skills add dsouzaAnush/salesforce-skills --skill sf-deploy
 ```
 
 ## Quick Start
