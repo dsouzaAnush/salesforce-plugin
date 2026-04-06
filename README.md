@@ -1,10 +1,14 @@
+<p align="center">
+  <img src="assets/salesforce-logo.png" alt="Salesforce cloud logo" width="88" height="88">
+</p>
+
 # salesforce-plugin
 
 A dedicated plugin wrapper repo for Salesforce agent skills.
 
 This repo is the plugin-side companion to the upstream skills repo at:
 
-- `/Users/anushdsouza/Developer/work/salesforce-skills`
+- [dsouzaAnush/salesforce-skills](https://github.com/dsouzaAnush/salesforce-skills)
 
 The split is intentional:
 
