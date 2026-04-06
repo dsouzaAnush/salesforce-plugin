@@ -5,12 +5,15 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import shutil
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_UPSTREAM = Path("/Users/anushdsouza/Developer/work/salesforce-skills")
+DEFAULT_UPSTREAM = Path(
+    os.getenv("SALESFORCE_SKILLS_UPSTREAM", str((ROOT.parent / "salesforce-skills").resolve()))
+)
 DEFAULT_UPSTREAM_REPOSITORY = "https://github.com/dsouzaAnush/salesforce-skills"
 SKILLS_DIR = ROOT / "skills"
 GENERATED_DIR = ROOT / "generated"
@@ -63,7 +66,6 @@ def remove_stale_skills(expected_skill_names: set[str]) -> None:
 def write_sync_report(upstream_root: Path, upstream_repository: str, skills: list[str]) -> None:
     GENERATED_DIR.mkdir(exist_ok=True)
     report = {
-        "upstreamLocalPath": str(upstream_root),
         "upstreamRepository": upstream_repository,
         "skillCount": len(skills),
         "skills": skills,
