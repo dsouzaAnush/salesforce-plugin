@@ -1,0 +1,10 @@
+interface:
+  display_name: "Salesforce Data Cloud Harmonize"
+  short_description: "Salesforce Data Cloud Harmonize phase. TRIGGER when: user wor..."
+  icon_small: "./assets/salesforce-logo.png"
+  icon_large: "./assets/salesforce-logo.png"
+  brand_color: "#0176D3"
+  default_prompt: "Use $sf-datacloud-harmonize for help with Salesforce Data Cloud Harmonize work."
+
+policy:
+  allow_implicit_invocation: true

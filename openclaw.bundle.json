@@ -1,0 +1,6 @@
+{
+  "format": "codex",
+  "hostTargets": [
+    "codex"
+  ]
+}

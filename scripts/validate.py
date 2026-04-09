@@ -20,6 +20,8 @@ else:
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN_MANIFEST = ROOT / ".codex-plugin" / "plugin.json"
+OPENCLAW_BUNDLE_MANIFEST = ROOT / "openclaw.bundle.json"
+PACKAGE_JSON = ROOT / "package.json"
 MARKETPLACE = ROOT / ".agents" / "plugins" / "marketplace.json"
 ROOT_AGENT_METADATA = ROOT / "agents" / "openai.yaml"
 SYNC_REPORT = ROOT / "generated" / "sync-report.json"
@@ -44,6 +46,25 @@ def validate_plugin_manifest() -> list[str]:
         if not asset_path.is_file():
             errors.append(f"Plugin manifest asset is missing: {asset_path}")
 
+    return errors
+
+
+def validate_openclaw_bundle_metadata() -> list[str]:
+    errors: list[str] = []
+    if not OPENCLAW_BUNDLE_MANIFEST.is_file():
+        return [f"Missing OpenClaw bundle manifest: {OPENCLAW_BUNDLE_MANIFEST}"]
+    if not PACKAGE_JSON.is_file():
+        return [f"Missing package.json: {PACKAGE_JSON}"]
+
+    bundle_manifest = json.loads(OPENCLAW_BUNDLE_MANIFEST.read_text(encoding="utf-8"))
+    package_manifest = json.loads(PACKAGE_JSON.read_text(encoding="utf-8"))
+
+    if package_manifest.get("name") != "openclaw-salesforce-plugin":
+        errors.append("package.json name must be openclaw-salesforce-plugin")
+    if bundle_manifest.get("format") != "codex":
+        errors.append("openclaw.bundle.json format must be codex")
+    if bundle_manifest.get("hostTargets") != ["codex"]:
+        errors.append('openclaw.bundle.json hostTargets must be ["codex"]')
     return errors
 
 
@@ -108,6 +129,7 @@ def validate_skills() -> list[str]:
 def collect_validation_errors() -> list[str]:
     errors: list[str] = []
     errors.extend(validate_plugin_manifest())
+    errors.extend(validate_openclaw_bundle_metadata())
     errors.extend(validate_marketplace())
     errors.extend(validate_root_agent_metadata())
     errors.extend(validate_sync_report())

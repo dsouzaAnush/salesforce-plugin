@@ -1,0 +1,10 @@
+interface:
+  display_name: "Salesforce Industry CommonCore OmniScript"
+  short_description: "OmniStudio OmniScript creation and validation with 120-point..."
+  icon_small: "./assets/salesforce-logo.png"
+  icon_large: "./assets/salesforce-logo.png"
+  brand_color: "#0176D3"
+  default_prompt: "Use $sf-industry-commoncore-omniscript for help with Salesforce Industry CommonCore OmniScript work."
+
+policy:
+  allow_implicit_invocation: true
