@@ -1,0 +1,10 @@
+.agents/
+docs/
+generated/
+pyproject.toml
+scripts/
+tests/
+
+# Maintenance-only sync metadata should not ship in the runtime bundle.
+skills/**/overlay.yaml
+skills/**/upstream/
