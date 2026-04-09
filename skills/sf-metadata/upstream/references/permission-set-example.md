@@ -394,6 +394,8 @@ sf org assign permset --name Invoice_Manager --target-org myorg --on-behalf-of u
 sf org assign permset --name Finance_Team --target-org myorg --on-behalf-of user@example.com
 ```
 
+> Tip: when `sf org assign permset --json` fails, inspect the full JSON payload. Current CLI versions include richer multi-error details for permission-set assignment failures.
+
 ---
 
 ## Best Practices Summary

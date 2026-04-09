@@ -96,13 +96,15 @@ It needs PKCE enabled, refresh tokens, and should be packageable for distributio
 </ExternalClientApplication>
 ```
 
-### 2. Global OAuth: `FieldServiceMobile.ecaGlobalOauth-meta.xml`
+### 2. Global OAuth: `FieldServiceMobile.ecaGlblOauth-meta.xml`
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <ExtlClntAppGlobalOauthSettings xmlns="http://soap.sforce.com/2006/04/metadata">
     <callbackUrl>fieldservicemobile://oauth/callback</callbackUrl>
+    <externalClientApplication>FieldServiceMobile</externalClientApplication>
     <isConsumerSecretOptional>true</isConsumerSecretOptional>
     <isPkceRequired>true</isPkceRequired>
+    <label>Field Service Mobile Global OAuth</label>
     <shouldRotateConsumerKey>true</shouldRotateConsumerKey>
     <shouldRotateConsumerSecret>true</shouldRotateConsumerSecret>
 </ExtlClntAppGlobalOauthSettings>
@@ -112,15 +114,17 @@ It needs PKCE enabled, refresh tokens, and should be packageable for distributio
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <ExtlClntAppOauthSettings xmlns="http://soap.sforce.com/2006/04/metadata">
-    <isAdminApproved>true</isAdminApproved>
-    <isCodeCredentialsEnabled>true</isCodeCredentialsEnabled>
-    <isClientCredentialsEnabled>false</isClientCredentialsEnabled>
-    <isRefreshTokenEnabled>true</isRefreshTokenEnabled>
-    <isIntrospectAllTokens>false</isIntrospectAllTokens>
-    <scopes>Api</scopes>
-    <scopes>RefreshToken</scopes>
-    <scopes>OpenID</scopes>
+    <commaSeparatedOauthScopes>Api, RefreshToken, OpenID</commaSeparatedOauthScopes>
+    <externalClientApplication>FieldServiceMobile</externalClientApplication>
+    <label>Field Service Mobile OAuth Settings</label>
 </ExtlClntAppOauthSettings>
+```
+
+### 4. Optional OAuth Security Settings (retrieve-first)
+```bash
+sf project retrieve start \
+  --metadata ExtlClntAppOauthSecuritySettings:FieldServiceMobile \
+  --target-org my-devhub
 ```
 
 **Score**: 115/120 ⭐⭐⭐⭐⭐
@@ -199,8 +203,9 @@ Migrate our "SalesPortal" Connected App to an External Client App for better sec
 
 📄 Files to Generate:
    1. SalesPortalECA.eca-meta.xml
-   2. SalesPortalECA.ecaGlobalOauth-meta.xml
+   2. SalesPortalECA.ecaGlblOauth-meta.xml
    3. SalesPortalECA.ecaOauth-meta.xml
+   4. (Optional) SalesPortalECA.ecaOauthSecurity-meta.xml after retrieve-first validation
 
 🔄 Migration Steps:
    1. ✓ Generate ECA metadata files
@@ -229,7 +234,9 @@ sf project deploy start \
 ### Deploy External Client App
 ```bash
 sf project deploy start \
-  --source-dir force-app/main/default/externalClientApps \
+  --metadata ExternalClientApplication:MyECAName \
+  --metadata ExtlClntAppGlobalOauthSettings:MyECAName \
+  --metadata ExtlClntAppOauthSettings:MyECAName \
   --target-org my-devhub
 ```
 
@@ -240,8 +247,10 @@ sf project retrieve start \
   --metadata ConnectedApp:MyAppName \
   --target-org my-org
 
-# External Client Apps
+# External Client Apps (header + companions)
 sf project retrieve start \
   --metadata ExternalClientApplication:MyECAName \
+  --metadata ExtlClntAppGlobalOauthSettings:MyECAName \
+  --metadata ExtlClntAppOauthSettings:MyECAName \
   --target-org my-org
 ```

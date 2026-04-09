@@ -21,7 +21,7 @@
   - zero: No refresh tokens (use with JWT)
   - specific_lifetime: Expire after specified period
 
-  File Naming: [AppName].ecaPolicy-meta.xml
+  File Naming: [AppName].ecaPlcy-meta.xml
 -->
 <ExtlClntAppConfigurablePolicies xmlns="http://soap.sforce.com/2006/04/metadata">
     <!-- IP Restriction Policy -->

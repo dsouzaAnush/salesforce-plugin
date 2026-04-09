@@ -355,15 +355,15 @@ while True:
 ### External Client App Configuration
 
 ```xml
-<!-- ecaOauth-meta.xml -->
+<!-- extlClntAppOauthSettings/MyServiceApp.ecaOauth-meta.xml -->
 <ExtlClntAppOauthSettings xmlns="http://soap.sforce.com/2006/04/metadata">
-    <commaSeparatedOauthScopes>api,refresh_token</commaSeparatedOauthScopes>
+    <commaSeparatedOauthScopes>Api</commaSeparatedOauthScopes>
     <externalClientApplication>MyServiceApp</externalClientApplication>
-    <isClientCredentialsEnabled>true</isClientCredentialsEnabled>
     <label>Service OAuth Settings</label>
-    <executionUser>service@company.com</executionUser>
 </ExtlClntAppOauthSettings>
 ```
+
+**Source-control note:** if you also need to manage client-credentials security settings in source, retrieve `ExtlClntAppOauthSecuritySettings:MyServiceApp` from an org first and commit the retrieved `.ecaOauthSecurity-meta.xml` file as your starting point.
 
 ### Implementation Pattern
 
@@ -632,7 +632,7 @@ Grep: pattern="<oauthConfig>" path="force-app/main/default/connectedApps/"
 | JWT Bearer | `connected-app-jwt.xml` |
 | Mobile/SPA (PKCE) | `external-client-app.xml` + `eca-global-oauth.xml` |
 | Device Authorization | `connected-app-basic.xml` (secret optional) |
-| Client Credentials | `eca-oauth-settings.xml` (ECA only) |
+| Client Credentials | `eca-oauth-settings.xml` + optional retrieve-first `ecaOauthSecurity` metadata (ECA only) |
 
 ### Salesforce OAuth Endpoints
 

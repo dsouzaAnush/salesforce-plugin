@@ -169,7 +169,8 @@ The validator covers structure, runtime gotchas, target readiness, and org-aware
 ### Phase 4 — preview smoke test
 Use the preview loop before publish:
 - derive 3–5 smoke utterances
-- start preview
+- start preview with the `start` / `send` / `end` subcommands, not bare `sf agent preview`
+- if you use `--authoring-bundle`, always choose a mode explicitly: `--simulate-actions` or `--use-live-actions`
 - inspect topic routing / action invocation / safety / grounding
 - fix and rerun up to 3 times
 

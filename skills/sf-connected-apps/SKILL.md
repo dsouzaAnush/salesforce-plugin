@@ -88,6 +88,9 @@ Use the provided assets instead of building from scratch:
 - `assets/eca-oauth-settings.xml`
 - `assets/eca-policies.xml`
 
+If you need source-controlled ECA OAuth security metadata, retrieve it from an org first and treat the retrieved file as the schema source of truth:
+- `sf project retrieve start --metadata ExtlClntAppOauthSecuritySettings:<AppName> --target-org <alias>`
+
 ### 4. Apply security hardening
 Favor:
 - least-privilege scopes
@@ -134,14 +137,18 @@ Usually lives under:
 - `force-app/main/default/connectedApps/`
 
 ### External Client App
-Typically involves multiple metadata files, including:
-- base ECA header
-- global OAuth settings
-- instance OAuth settings
-- optional policy metadata
+Current source-supported ECA metadata uses multiple top-level source directories, not a single `externalClientApps/` folder:
+- `force-app/main/default/externalClientApps/` → `ExternalClientApplication` (`.eca-meta.xml`)
+- `force-app/main/default/extlClntAppGlobalOauthSets/` → `ExtlClntAppGlobalOauthSettings` (`.ecaGlblOauth-meta.xml`)
+- `force-app/main/default/extlClntAppOauthSettings/` → `ExtlClntAppOauthSettings` (`.ecaOauth-meta.xml`)
+- `force-app/main/default/extlClntAppOauthSecuritySettings/` → `ExtlClntAppOauthSecuritySettings` (`.ecaOauthSecurity-meta.xml`)
+- `force-app/main/default/extlClntAppOauthPolicies/` → `ExtlClntAppOauthConfigurablePolicies` (`.ecaOauthPlcy-meta.xml`)
+- `force-app/main/default/extlClntAppPolicies/` → `ExtlClntAppConfigurablePolicies` (`.ecaPlcy-meta.xml`)
 
-Important file-name gotcha:
+Important file-name gotchas:
 - the global OAuth suffix is `.ecaGlblOauth`, not `.ecaGlobalOauth`
+- the general policy suffix is `.ecaPlcy`, not `.ecaPolicy`
+- use `.ecaOauthSecurity` for `ExtlClntAppOauthSecuritySettings`
 
 ---
 

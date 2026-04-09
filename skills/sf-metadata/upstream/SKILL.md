@@ -65,6 +65,8 @@ For generation, use the assets under:
 
 For querying, prefer `sf` metadata and `sobject describe` commands.
 
+Recent SDR/CLI support worth knowing when reading older examples: `CnfgItemSourceDefinition`, `ExtlClntAppOauthSecuritySettings`, and `UIBundle` are now source-supported under their current names. See [references/metadata-types-reference.md](references/metadata-types-reference.md).
+
 ### 3. Validate metadata quality
 Check:
 - naming conventions

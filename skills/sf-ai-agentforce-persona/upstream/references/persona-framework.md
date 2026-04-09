@@ -349,7 +349,6 @@ When the agent's modality includes telephony, these design adjustments apply:
 
 Voice selection, voice fine-tuning, pronunciation dictionary, and key-term prompting are configured separately in Agentforce Builder under Connections → Voice Settings. See `persona-encoding-guide-voice.md` for reference.
 
-<a id="skill-level-adaptation"></a>
 ### Skill-Level Adaptation *(optional)*
 
 When the agent's audience spans multiple expertise levels, the agent may need to adapt its language complexity and explanation depth to the user's demonstrated skill level. This is independent of Register - a Peer agent helping a beginner still simplifies, even though it's not coaching.

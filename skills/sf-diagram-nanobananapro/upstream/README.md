@@ -13,10 +13,10 @@ AI-powered visual content generation for Salesforce development. Generate ERD di
 
 ```bash
 # Install as part of sf-skills
-npx skills add dsouzaAnush/salesforce-skills
+npx skills add Jaganpro/sf-skills
 
 # Or install just this skill
-npx skills add dsouzaAnush/salesforce-skills --skill sf-diagram-nanobananapro
+npx skills add Jaganpro/sf-skills --skill sf-diagram-nanobananapro
 ```
 
 ## Prerequisites

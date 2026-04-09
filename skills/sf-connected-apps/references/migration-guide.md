@@ -115,13 +115,15 @@ Week 12: Delete Connected App
 </ExternalClientApplication>
 ```
 
-**File 2: Global OAuth** (`MyApp.ecaGlobalOauth-meta.xml`)
+**File 2: Global OAuth** (`MyApp.ecaGlblOauth-meta.xml`)
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <ExtlClntAppGlobalOauthSettings xmlns="http://soap.sforce.com/2006/04/metadata">
     <callbackUrl>https://app.example.com/oauth/callback</callbackUrl>
+    <externalClientApplication>MyApp</externalClientApplication>
     <isConsumerSecretOptional>false</isConsumerSecretOptional>
     <isPkceRequired>true</isPkceRequired>
+    <label>MyApp Global OAuth</label>
     <shouldRotateConsumerKey>true</shouldRotateConsumerKey>
     <shouldRotateConsumerSecret>true</shouldRotateConsumerSecret>
 </ExtlClntAppGlobalOauthSettings>
@@ -131,20 +133,23 @@ Week 12: Delete Connected App
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <ExtlClntAppOauthSettings xmlns="http://soap.sforce.com/2006/04/metadata">
-    <isAdminApproved>true</isAdminApproved>
-    <isCodeCredentialsEnabled>true</isCodeCredentialsEnabled>
-    <isClientCredentialsEnabled>false</isClientCredentialsEnabled>
-    <isRefreshTokenEnabled>true</isRefreshTokenEnabled>
-    <scopes>Api</scopes>
-    <scopes>RefreshToken</scopes>
+    <commaSeparatedOauthScopes>Api, RefreshToken</commaSeparatedOauthScopes>
+    <externalClientApplication>MyApp</externalClientApplication>
+    <label>MyApp OAuth Settings</label>
 </ExtlClntAppOauthSettings>
 ```
+
+**Optional companion metadata (retrieve-first):** `MyApp.ecaOauthSecurity-meta.xml`
+- Use this when you need to source-control ECA OAuth security settings now supported by the CLI/SDR registry.
+- Recommended workflow: retrieve from an org first, then commit the retrieved file under `extlClntAppOauthSecuritySettings/`.
 
 #### 3.3 Deploy to DevHub/Org
 
 ```bash
 sf project deploy start \
-  --source-dir force-app/main/default/externalClientApps \
+  --metadata ExternalClientApplication:MyApp \
+  --metadata ExtlClntAppGlobalOauthSettings:MyApp \
+  --metadata ExtlClntAppOauthSettings:MyApp \
   --target-org <target-org>
 ```
 
@@ -176,10 +181,11 @@ For each integrated system:
 |----------------------|----------------|
 | Consumer Key | New Consumer Key (different) |
 | Consumer Secret | New Consumer Secret (different) |
-| Callback URL | Same (in ecaGlobalOauth) |
-| Scopes | Same (in ecaOauth) |
-| IP Relaxation | In ecaPolicy (admin-managed) |
-| Refresh Token Policy | In ecaPolicy (admin-managed) |
+| Callback URL | Same (in `ecaGlblOauth`) |
+| Scopes | Same (in `ecaOauth`) |
+| IP Relaxation | In `ecaPlcy` (admin-managed) |
+| Refresh Token Policy | In `ecaPlcy` (admin-managed) |
+| OAuth security controls | In `ecaOauthSecurity` when source-controlled (retrieve-first) |
 
 ---
 
@@ -222,7 +228,9 @@ curl -X POST https://login.salesforce.com/services/oauth2/token \
 ```bash
 # Deploy ECA to production
 sf project deploy start \
-  --source-dir force-app/main/default/externalClientApps \
+  --metadata ExternalClientApplication:MyApp \
+  --metadata ExtlClntAppGlobalOauthSettings:MyApp \
+  --metadata ExtlClntAppOauthSettings:MyApp \
   --target-org production
 ```
 
@@ -280,8 +288,8 @@ If migration fails:
 | Issue | Cause | Solution |
 |-------|-------|----------|
 | "Invalid consumer key" | Using old key | Update to new ECA key |
-| "Callback URL mismatch" | URL not in ECA config | Add URL to ecaGlobalOauth |
-| "Scope not allowed" | Scope not in ecaOauth | Add required scope |
+| "Callback URL mismatch" | URL not in ECA config | Add URL to `ecaGlblOauth` |
+| "Scope not allowed" | Scope not in `ecaOauth` | Add required scope |
 | "User not authorized" | No policy assignment | Assign user via Permission Set |
 | "MFA required" | ECA security | Complete MFA challenge |
 
@@ -304,12 +312,16 @@ sf project retrieve start \
   --target-org $TARGET_ORG \
   --output-dir ./migration
 
-# 2. Create ECA directory
+# 2. Create ECA source directories
 mkdir -p force-app/main/default/externalClientApps
+mkdir -p force-app/main/default/extlClntAppGlobalOauthSets
+mkdir -p force-app/main/default/extlClntAppOauthSettings
+# Optional when you source-control security settings:
+mkdir -p force-app/main/default/extlClntAppOauthSecuritySettings
 
 # 3. Deploy ECA (assumes files are created)
 sf project deploy start \
-  --source-dir force-app/main/default/externalClientApps \
+  --source-dir force-app/main/default \
   --target-org $TARGET_ORG
 
 echo "✅ ECA deployed. Retrieve new Consumer Key from Setup."

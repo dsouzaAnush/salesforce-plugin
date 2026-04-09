@@ -321,7 +321,7 @@ The LLM might ignore your instructions. The only way to truly prevent unwanted b
 
 ## Programmatic Trace Access via CLI
 
-> **Beta**: `sf agent preview start/send/end` provides full v1.1 trace data with 13 step types — far richer than the 5-type STDM data in Builder UI.
+> `sf agent preview start/send/end` provides full v1.1 trace data with 13 step types — far richer than the 5-type STDM data in Builder UI.
 
 ### Workflow
 
@@ -334,12 +334,14 @@ SESSION_ID=$(sf agent preview start \
 # 2. Send utterance(s)
 PLAN_ID=$(sf agent preview send \
   --session-id "$SESSION_ID" \
+  --api-name My_Agent \
   --utterance "I need help with my order" \
   --target-org myOrg --json 2>/dev/null | jq -r '.result.messages[-1].planId')
 
 # 3. End session and get trace path
 TRACES_PATH=$(sf agent preview end \
   --session-id "$SESSION_ID" \
+  --api-name My_Agent \
   --target-org myOrg --json 2>/dev/null | jq -r '.result.tracesPath')
 
 # 4. Analyze trace

@@ -14,12 +14,12 @@ Salesforce data operations skill for Claude Code. Create, validate, bulk-load, c
 ## Installation
 
 ```bash
-npx skills add dsouzaAnush/salesforce-skills --skill sf-data
+npx skills add Jaganpro/sf-skills --skill sf-data
 ```
 
 Or install the complete sf-skills suite:
 ```bash
-npx skills add dsouzaAnush/salesforce-skills
+npx skills add Jaganpro/sf-skills
 ```
 
 ## Usage

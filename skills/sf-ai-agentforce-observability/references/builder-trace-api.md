@@ -412,19 +412,19 @@ Params: {
 
 ### Option 1: CLI Preview Commands (Recommended)
 
-The `sf agent preview start/send/end` commands (beta) provide programmatic access to the same v1.1 trace data without browser automation:
+The `sf agent preview start/send/end` commands provide programmatic access to the same v1.1 trace data without browser automation:
 
 ```bash
 # Start session → send utterance → end and get traces
 SESSION_ID=$(sf agent preview start --api-name My_Agent --target-org myOrg --json 2>/dev/null | jq -r '.result.sessionId')
-PLAN_ID=$(sf agent preview send --session-id "$SESSION_ID" --utterance "test" --target-org myOrg --json 2>/dev/null | jq -r '.result.messages[-1].planId')
-TRACES_PATH=$(sf agent preview end --session-id "$SESSION_ID" --target-org myOrg --json 2>/dev/null | jq -r '.result.tracesPath')
+PLAN_ID=$(sf agent preview send --session-id "$SESSION_ID" --api-name My_Agent --utterance "test" --target-org myOrg --json 2>/dev/null | jq -r '.result.messages[-1].planId')
+TRACES_PATH=$(sf agent preview end --session-id "$SESSION_ID" --api-name My_Agent --target-org myOrg --json 2>/dev/null | jq -r '.result.tracesPath')
 
 # Analyze trace
 jq '.' "$TRACES_PATH/$PLAN_ID.json"
 ```
 
-> For full workflow details, see **sf-ai-agentforce-testing** Phase F: trace-enriched preview testing.
+> For full workflow details, see **sf-ai-agentforce-testing** Phase F: trace-enriched preview testing. If you use `--authoring-bundle` instead of `--api-name`, remember that `preview start` now requires an explicit mode flag: `--simulate-actions` or `--use-live-actions`.
 
 ### Option 2: Manual HAR Export (Fallback)
 

@@ -63,6 +63,10 @@ sf org assign permset \
   --on-behalf-of <agent-username> \
   -o TARGET_ORG --json
 
+# If assignment fails, inspect the full JSON payload.
+# Current CLI versions surface multiple assignment errors in --json output,
+# which is much more useful than retrying blindly.
+
 # Step 5: Verify all Permission Sets for the running user
 sf data query \
   --query "SELECT PermissionSet.Name, PermissionSet.Label FROM PermissionSetAssignment WHERE Assignee.Username = '<agent-username>' ORDER BY PermissionSet.Name" \
@@ -74,7 +78,9 @@ sf data query \
 
 # Step 7: Validate and smoke-test before publish
 sf agent validate authoring-bundle --api-name <AgentName> -o TARGET_ORG --json
-sf agent preview start --authoring-bundle <AgentName> --simulate-actions -o TARGET_ORG --json
+SESSION_ID=$(sf agent preview start --authoring-bundle <AgentName> --simulate-actions -o TARGET_ORG --json | jq -r '.result.sessionId')
+sf agent preview send --session-id "$SESSION_ID" --authoring-bundle <AgentName> --utterance "hello" -o TARGET_ORG --json
+sf agent preview end --session-id "$SESSION_ID" --authoring-bundle <AgentName> -o TARGET_ORG --json
 
 # Step 8: Publish and activate
 sf agent publish authoring-bundle --api-name <AgentName> -o TARGET_ORG --json
@@ -300,9 +306,20 @@ This deploys the agent as **unpublished metadata** — you can edit freely witho
 #### 6.2: Test with Preview (Before Publishing)
 
 ```bash
-sf agent preview start \
+SESSION_ID=$(sf agent preview start \
   --authoring-bundle <AgentName> \
   --use-live-actions \
+  -o TARGET_ORG --json | jq -r '.result.sessionId')
+
+sf agent preview send \
+  --session-id "$SESSION_ID" \
+  --authoring-bundle <AgentName> \
+  --utterance "hello" \
+  -o TARGET_ORG --json
+
+sf agent preview end \
+  --session-id "$SESSION_ID" \
+  --authoring-bundle <AgentName> \
   -o TARGET_ORG --json
 ```
 

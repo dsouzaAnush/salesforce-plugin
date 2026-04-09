@@ -97,7 +97,7 @@ python3 ~/.claude/sf-skills-install.py --with-datacloud-runtime
 Or rerun the latest installer directly from GitHub:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/dsouzaAnush/salesforce-skills/main/extras/claude-code/tools/install.py | python3 - --with-datacloud-runtime
+curl -sSL https://raw.githubusercontent.com/Jaganpro/sf-skills/main/tools/install.py | python3 - --with-datacloud-runtime
 ```
 
 ### Plugin not found after install

@@ -29,12 +29,12 @@ from typing import Dict, List, Any, Optional
 
 # Add shared lsp-engine to path
 # The installer places lsp-engine at ~/.claude/lsp-engine/ but in a dev
-# repo checkout it lives at <repo>/extras/claude-code/shared/lsp-engine/. Try both.
+# repo checkout it lives at <repo>/shared/lsp-engine/.  Try both.
 SCRIPT_DIR = Path(__file__).parent
 PLUGIN_ROOT = SCRIPT_DIR.parent.parent
 _LSP_CANDIDATES = [
     Path.home() / ".claude" / "lsp-engine",               # Installed path
-    PLUGIN_ROOT.parent.parent / "extras" / "claude-code" / "shared" / "lsp-engine",  # Dev repo path
+    PLUGIN_ROOT.parent.parent / "shared" / "lsp-engine",  # Dev repo path
 ]
 LSP_ENGINE_PATH = next((p for p in _LSP_CANDIDATES if p.is_dir()), _LSP_CANDIDATES[0])
 sys.path.insert(0, str(LSP_ENGINE_PATH))

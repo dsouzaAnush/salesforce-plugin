@@ -15,10 +15,10 @@ Comprehensive Agentforce testing skill with test execution, coverage analysis, a
 
 ```bash
 # Install as part of sf-skills
-npx skills add dsouzaAnush/salesforce-skills
+npx skills add Jaganpro/sf-skills
 
 # Or install just this skill
-npx skills add dsouzaAnush/salesforce-skills --skill sf-ai-agentforce-testing
+npx skills add Jaganpro/sf-skills --skill sf-ai-agentforce-testing
 ```
 
 ## Quick Start
@@ -69,6 +69,9 @@ sf agent preview --api-name AgentName --target-org [alias]
 sf agent preview --api-name AgentName --use-live-actions --target-org [alias]
 ```
 
+> `sf agent preview` still uses simulated mode by default for the interactive REPL.
+> For programmatic preview sessions, authoring bundles now require an explicit mode on `sf agent preview start`: `--simulate-actions` or `--use-live-actions`.
+
 ## Scoring System (100 Points)
 
 | Category | Points | Focus |
@@ -94,7 +97,7 @@ sf agent preview --api-name AgentName --use-live-actions --target-org [alias]
 |---------------|-------------|
 | sf-ai-agentscript | Create/fix agent scripts (recommended) |
 | sf-ai-agentforce | Agentforce platform setup (Agent Builder, GenAi metadata) |
-| sf-connected-apps | OAuth setup for live preview |
+| sf-connected-apps | External Client App setup for Agent Runtime API testing |
 | sf-data | Generate test data for actions |
 | sf-flow | Fix failing Flow actions |
 | sf-debug | Analyze agent error logs |
@@ -122,7 +125,7 @@ When enabled, the skill will:
 - sf CLI v2
 - Target Salesforce org with Agentforce enabled
 - Agent published and activated for testing
-- Standard org auth for live preview mode (`sf org login web`)
+- Standard org auth for CLI preview (`sf org login web`)
 
 ## License
 

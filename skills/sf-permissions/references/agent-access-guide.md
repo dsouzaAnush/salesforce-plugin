@@ -53,6 +53,8 @@ sf project deploy start --source-dir force-app/main/default/permissionsets/MyAge
 sf org assign permset --name MyAgent_Access --on-behalf-of <username> -o TARGET_ORG --json
 ```
 
+> If assignment fails, inspect the full `--json` failure payload first. Current CLI versions surface multiple permission-assignment errors in JSON output, which makes root-cause analysis much easier than retrying blindly.
+
 ---
 
 ## Visibility Troubleshooting

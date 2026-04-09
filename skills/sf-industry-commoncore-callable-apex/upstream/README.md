@@ -17,10 +17,10 @@ rubric and migration guidance from legacy `VlocityOpenInterface` implementations
 
 ```bash
 # Install as part of sf-skills
-npx skills add dsouzaAnush/salesforce-skills
+npx skills add Jaganpro/sf-skills
 
 # Or install just this skill
-npx skills add dsouzaAnush/salesforce-skills --skill sf-industry-commoncore-callable-apex
+npx skills add Jaganpro/sf-skills --skill sf-industry-commoncore-callable-apex
 ```
 
 ## Quick Start

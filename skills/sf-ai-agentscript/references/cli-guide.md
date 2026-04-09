@@ -19,9 +19,9 @@
 | `sf agent generate authoring-bundle` | Scaffold authoring bundle | `sf agent generate authoring-bundle --no-spec --name "My Agent" -o TARGET_ORG --json` |
 | `sf agent activate` | Activate agent (make live) | `sf agent activate --api-name MyAgent --version <n> -o TARGET_ORG --json` |
 | `sf agent deactivate` | Deactivate agent (take offline) | `sf agent deactivate --api-name MyAgent -o TARGET_ORG --json` |
-| `sf agent preview start` | Start programmatic preview session | `sf agent preview start --api-name MyAgent -o TARGET_ORG --json` (or `--authoring-bundle`) |
-| `sf agent preview send` | Send utterance to preview session | `sf agent preview send --session-id <id> --utterance "Hello" --json` |
-| `sf agent preview end` | End preview session | `sf agent preview end --session-id <id> --json` |
+| `sf agent preview start` | Start programmatic preview session | `sf agent preview start --authoring-bundle MyAgent --simulate-actions -o TARGET_ORG --json` (or `--api-name MyAgent`) |
+| `sf agent preview send` | Send utterance to preview session | `sf agent preview send --session-id <id> --authoring-bundle MyAgent --utterance "Hello" -o TARGET_ORG --json` |
+| `sf agent preview end` | End preview session | `sf agent preview end --session-id <id> --authoring-bundle MyAgent -o TARGET_ORG --json` |
 | `sf org open agent` | Open Agent Builder in browser | `sf org open agent --api-name MyAgent -o TARGET_ORG` |
 | `sf org open authoring-bundle` | Open Agentforce Studio list view | `sf org open authoring-bundle -o TARGET_ORG` |
 
@@ -246,10 +246,10 @@ WHERE Username = 'myagent_agent@00Dxxxx.ext'
 LIMIT 1
 " -o TARGET_ORG --json
 
-# 3. Smoke-test the authoring bundle
-SESSION_ID=$(sf agent preview start --authoring-bundle MyAgent -o TARGET_ORG --json | jq -r '.result.sessionId')
-sf agent preview send --session-id "$SESSION_ID" --authoring-bundle MyAgent --utterance "hello" --json
-sf agent preview end --session-id "$SESSION_ID" --json
+# 3. Smoke-test the authoring bundle (authoring bundles now require an explicit mode)
+SESSION_ID=$(sf agent preview start --authoring-bundle MyAgent --simulate-actions -o TARGET_ORG --json | jq -r '.result.sessionId')
+sf agent preview send --session-id "$SESSION_ID" --authoring-bundle MyAgent --utterance "hello" -o TARGET_ORG --json
+sf agent preview end --session-id "$SESSION_ID" --authoring-bundle MyAgent -o TARGET_ORG --json
 
 # 4. Publish
 sf agent publish authoring-bundle --api-name MyAgent -o TARGET_ORG --json
@@ -360,13 +360,21 @@ jobs:
 
 Set `AGENT_VERSION` in the workflow environment to the BotVersion number you intend to activate.
 
-### SF Agent CLI Exit Codes
+### SF Agent CLI Error Codes (current high-signal set)
 
-| Code | Meaning | CI/CD Action |
-|------|---------|-------------|
-| 0 | Success | Proceed to next step |
-| 1 | Warning (non-critical, e.g., some targets missing) | Review warnings, may proceed |
-| 2 | Critical failure (auth, network, syntax error) | Block pipeline, fix required |
+Use `sf <command> --help` for the full command-specific list. The most relevant current codes are:
+
+| Command | Codes to expect | What they mean |
+|---------|-----------------|----------------|
+| `sf agent validate authoring-bundle` | `0, 1, 2, 3` | `Succeeded`, `Failed` (compilation errors), `NotFound`, `ServerError` |
+| `sf agent publish authoring-bundle` | aligns with validate for compilation failures | publish now uses the same compilation-related codes as validate when Agent Script compilation fails |
+| `sf agent preview start` | `0, 1, 2, 3, 4` | `Succeeded`, `Failed`, `NotFound`, `ServerError`, `PreviewStartFailed` |
+| `sf agent preview send` | `0, 2, 4, 5` | `Succeeded`, `NotFound`, `PreviewSendFailed`, `SessionAmbiguous` |
+| `sf agent preview end` | `0, 2, 4, 5` | `Succeeded`, `NotFound`, `PreviewEndFailed`, `SessionAmbiguous` |
+
+**CI/CD guidance:**
+- block immediately on `1+` for validate / publish
+- if preview returns `SessionAmbiguous (5)`, run `sf agent preview sessions --json`, pick the right session, and retry with `--session-id`
 
 ---
 
@@ -428,46 +436,50 @@ For Agent Script agents today:
 > ⛔ **NEVER run bare `sf agent preview`** — it launches an interactive terminal requiring keyboard input. Claude Code CANNOT use it. **ALWAYS use subcommands**: `start`, `send`, `end` with `--json`.
 
 ```bash
-# 1. Start a preview session
+# 1. Start a published-agent preview session
+# Published agents always use live actions.
 SESSION_ID=$(sf agent preview start --api-name MyAgent -o TARGET_ORG --json | jq -r '.result.sessionId')
 
 # 2. Send utterances programmatically
-sf agent preview send --session-id $SESSION_ID --authoring-bundle MyAgent --utterance "I need a refund" --json
+sf agent preview send --session-id $SESSION_ID --api-name MyAgent --utterance "I need a refund" -o TARGET_ORG --json
 
 # 3. Send follow-up messages
-sf agent preview send --session-id $SESSION_ID --authoring-bundle MyAgent --utterance "Order #12345" --json
+sf agent preview send --session-id $SESSION_ID --api-name MyAgent --utterance "Order #12345" -o TARGET_ORG --json
 
 # 4. End the session
-sf agent preview end --session-id $SESSION_ID --json
+sf agent preview end --session-id $SESSION_ID --api-name MyAgent -o TARGET_ORG --json
 
-# List active preview sessions
-sf agent preview sessions -o TARGET_ORG --json
+# List cached preview sessions (no target-org flag)
+sf agent preview sessions --json
 ```
 
 ### Preview Modes
 
-| Mode | Flag | Behavior |
-|------|------|----------|
-| **Simulated** (default) | *(none)* | AI simulates/mocks action responses — no real data changes |
-| **Live** | `--use-live-actions` | Executes real actions in the org (Flows, Apex, APIs) |
+| Target | Required flags | Behavior |
+|--------|----------------|----------|
+| Published agent (`--api-name`) | none | programmatic preview always uses live actions |
+| Authoring bundle (`--authoring-bundle`) | exactly one of `--simulate-actions` or `--use-live-actions` | choose simulated vs real-action execution explicitly |
 
 Additional preview flags:
 
 | Flag | Purpose |
 |------|---------|
-| `--use-live-actions` | Use live (not mocked) actions during preview |
-| `--authoring-bundle` | Specify authoring bundle name instead of `--api-name` |
+| `--simulate-actions` | Use AI to simulate action execution. Required with `--authoring-bundle` when you want simulated mode. |
+| `--use-live-actions` | Execute real Apex/Flows/Prompt Templates. Required with `--authoring-bundle` when you want live mode. |
+| `--authoring-bundle` | Preview the local authoring bundle instead of a published Bot. |
+| `--api-name` | Preview an activated published agent. |
 
 ```bash
-# Live preview with live actions
-SESSION_ID=$(sf agent preview start --api-name MyAgent --use-live-actions -o TARGET_ORG --json | jq -r '.result.sessionId')
+# Authoring-bundle preview in simulated mode
+SESSION_ID=$(sf agent preview start --authoring-bundle MyBundle --simulate-actions -o TARGET_ORG --json | jq -r '.result.sessionId')
+sf agent preview send --session-id $SESSION_ID --authoring-bundle MyBundle --utterance "What can you help me with?" -o TARGET_ORG --json
+sf agent preview end --session-id $SESSION_ID --authoring-bundle MyBundle -o TARGET_ORG --json
 
-# Preview using authoring bundle name instead of api-name
-SESSION_ID=$(sf agent preview start --authoring-bundle MyBundle -o TARGET_ORG --json | jq -r '.result.sessionId')
-
-# End session (also supports --authoring-bundle)
-sf agent preview end --session-id $SESSION_ID --json
+# Authoring-bundle preview in live mode
+SESSION_ID=$(sf agent preview start --authoring-bundle MyBundle --use-live-actions -o TARGET_ORG --json | jq -r '.result.sessionId')
 ```
+
+If `preview send` or `preview end` returns `SessionAmbiguous (5)`, run `sf agent preview sessions --json` and retry with the explicit `--session-id`.
 
 ---
 
@@ -663,9 +675,9 @@ These are **metadata types**, NOT sObjects. SOQL queries against them return `IN
 
 | ❌ WRONG (interactive, hangs) | ✅ CORRECT (programmatic) |
 |-------------------------------|--------------------------|
-| `sf agent preview` | `sf agent preview start --authoring-bundle MyAgent --json` |
-| *(waits for keyboard input)* | `sf agent preview send --session-id $ID --authoring-bundle MyAgent --utterance "..." --json` |
-| | `sf agent preview end --session-id $ID --json` |
+| `sf agent preview` | `sf agent preview start --authoring-bundle MyAgent --simulate-actions -o TARGET_ORG --json` |
+| *(waits for keyboard input)* | `sf agent preview send --session-id $ID --authoring-bundle MyAgent --utterance "..." -o TARGET_ORG --json` |
+| | `sf agent preview end --session-id $ID --authoring-bundle MyAgent -o TARGET_ORG --json` |
 
 ### DO NOT pass context variables via `sf agent preview`
 

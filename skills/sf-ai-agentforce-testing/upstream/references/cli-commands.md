@@ -561,20 +561,24 @@ Saved to: ./logs/transcript.json
 For CI/CD and automation, use the non-interactive preview subcommands:
 
 ```bash
-# Start a preview session (returns session ID)
+# Published-agent session (programmatic preview uses live actions for published agents)
 sf agent preview start --api-name My_Agent -o ORG --json
 
 # Send an utterance to the session
-sf agent preview send --session-id SESSION_ID --utterance "Hello" -o ORG --json
+sf agent preview send --session-id SESSION_ID --api-name My_Agent --utterance "Hello" -o ORG --json
 
 # Send a follow-up utterance (same session for multi-turn)
-sf agent preview send --session-id SESSION_ID --utterance "Check order 12345" -o ORG --json
+sf agent preview send --session-id SESSION_ID --api-name My_Agent --utterance "Check order 12345" -o ORG --json
 
 # End the session
-sf agent preview end --session-id SESSION_ID -o ORG --json
+sf agent preview end --session-id SESSION_ID --api-name My_Agent -o ORG --json
+
+# Authoring-bundle session (must choose a mode explicitly)
+sf agent preview start --authoring-bundle My_Agent --simulate-actions -o ORG --json
+# or: sf agent preview start --authoring-bundle My_Agent --use-live-actions -o ORG --json
 ```
 
-These subcommands enable automated conversation testing outside the interactive REPL. See also: `sf-ai-agentscript/references/cli-guide.md` for the full preview workflow.
+These subcommands enable automated conversation testing outside the interactive REPL. Authoring-bundle sessions no longer default to simulated mode — choose `--simulate-actions` or `--use-live-actions` explicitly. See also: `sf-ai-agentscript/references/cli-guide.md` for the full preview workflow.
 
 **Output Files:**
 
@@ -970,4 +974,4 @@ These fields are NOT part of the CLI YAML schema and will be silently ignored or
 | `sf agent publish authoring-bundle` | sf-ai-agentscript | Publish agent before testing |
 | `sf agent validate authoring-bundle` | sf-ai-agentscript | Validate agent syntax |
 | `sf agent activate` | sf-ai-agentscript | Activate for preview |
-| `sf org login web` | - | OAuth for live preview |
+| `sf org login web` | - | Standard org auth for interactive or programmatic CLI preview |

@@ -40,6 +40,7 @@ Delegate elsewhere when the user is:
 - Testing comes **after** deploy / publish / activate.
 - Use **multi-turn API testing** as the primary path when conversation continuity matters.
 - Use **CLI Testing Center** as the secondary path for single-utterance and org-supported test-center workflows.
+- Interactive and programmatic CLI preview use standard `sf org login web` authentication; **ECA is only required for Agent Runtime API testing**, not for live preview.
 - Fixes to the agent should be delegated to **[sf-ai-agentscript](../sf-ai-agentscript/SKILL.md)** when Agent Script changes are needed.
 - Do **not** use raw `curl` for OAuth token validation in the ECA flow; use the provided credential tooling.
 
@@ -193,7 +194,7 @@ Next step: <fix, republish, rerun, or expand coverage>
 | create test data | [sf-data](../sf-data/SKILL.md) | action-ready data setup |
 | fix Flow-backed actions | [sf-flow](../sf-flow/SKILL.md) | Flow repair |
 | fix Apex-backed actions | [sf-apex](../sf-apex/SKILL.md) | Apex repair |
-| set up ECA / OAuth | [sf-connected-apps](../sf-connected-apps/SKILL.md) | auth and app configuration |
+| set up ECA / OAuth for Agent Runtime API | [sf-connected-apps](../sf-connected-apps/SKILL.md) | auth and app configuration |
 | analyze session telemetry | [sf-ai-agentforce-observability](../sf-ai-agentforce-observability/SKILL.md) | STDM / trace analysis |
 
 ---

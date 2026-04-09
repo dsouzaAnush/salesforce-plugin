@@ -15,11 +15,12 @@
   - Local: Available only in this org
   - Packageable: Can be packaged and distributed via 2GP
 
-  Required Files for ECA:
-  1. [AppName].eca-meta.xml (this file)
-  2. [AppName].ecaGlobalOauth-meta.xml (global OAuth settings)
-  3. [AppName].ecaOauth-meta.xml (instance OAuth settings)
-  4. [AppName].ecaPolicy-meta.xml (auto-generated after first deploy)
+  Common Source Files for ECA:
+  1. externalClientApps/[AppName].eca-meta.xml (this file)
+  2. extlClntAppGlobalOauthSets/[AppName].ecaGlblOauth-meta.xml (global OAuth settings)
+  3. extlClntAppOauthSettings/[AppName].ecaOauth-meta.xml (OAuth scopes / parent link)
+  4. extlClntAppOauthSecuritySettings/[AppName].ecaOauthSecurity-meta.xml (optional, retrieve-first)
+  5. extlClntAppOauthPolicies/[AppName].ecaOauthPlcy-meta.xml or extlClntAppPolicies/[AppName].ecaPlcy-meta.xml (optional policy metadata)
 
   Minimum API Version: 61.0
 -->

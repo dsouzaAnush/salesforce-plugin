@@ -82,7 +82,7 @@ Relevant trails and modules:
 ### David Ryan (weytani)
 **Primary Contributor** — [GitHub](https://github.com/weytani)
 
-This sf-industry-commoncore-datamapper skill was contributed by David Ryan (weytani) as part of the dsouzaAnush/salesforce-skills skill library.
+This sf-industry-commoncore-datamapper skill was contributed by David Ryan (weytani) as part of the Jaganpro/sf-skills skill library.
 
 ---
 

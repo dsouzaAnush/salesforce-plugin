@@ -455,7 +455,7 @@ sf data query --query "SELECT Id, OmniDataTransformationId, InputObjectName, Out
 - **Data Mapper items contain object references**: InputObjectName and OutputObjectName on OmniDataTransformItem records reveal which sObjects a Data Mapper reads from and writes to. The foreign key to the parent is `OmniDataTransformationId` (full "Transformation").
 - **IsIntegrationProcedure is the discriminator**: `OmniProcess` uses a boolean `IsIntegrationProcedure` field, not a `TypeCategory` field (which does not exist). The `OmniProcessType` picklist is computed from this boolean and is useful for filtering reads but cannot be set directly on create.
 - **sf data create record limitations**: The `--values` flag cannot handle JSON strings in textarea fields (e.g., PropertySetConfig). Use `sf api request rest --method POST --body @file.json` instead for records with JSON configuration.
-- **Install related skills**: `/plugin install github:dsouzaAnush/salesforce-skills/sf-industry-commoncore-datamapper`, `/plugin install github:dsouzaAnush/salesforce-skills/sf-industry-commoncore-integration-procedure`, `/plugin install github:dsouzaAnush/salesforce-skills/sf-industry-commoncore-omniscript`, `/plugin install github:dsouzaAnush/salesforce-skills/sf-industry-commoncore-flexcard`
+- **Install related skills**: `/plugin install github:Jaganpro/sf-skills/sf-industry-commoncore-datamapper`, `/plugin install github:Jaganpro/sf-skills/sf-industry-commoncore-integration-procedure`, `/plugin install github:Jaganpro/sf-skills/sf-industry-commoncore-omniscript`, `/plugin install github:Jaganpro/sf-skills/sf-industry-commoncore-flexcard`
 
 ---
 

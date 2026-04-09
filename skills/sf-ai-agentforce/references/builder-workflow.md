@@ -65,5 +65,5 @@ Publishing does **not** activate the new version automatically.
 - Prompt terminology: [prompt-templates.md](prompt-templates.md)
 - Models API: [models-api.md](models-api.md)
 - Custom Lightning types: [custom-lightning-types.md](custom-lightning-types.md)
-- Employee Agent visibility: [../../sf-permissions/references/agent-access-guide.md](../../sf-permissions/references/agent-access-guide.md)
-- Service Agent running user: [../../sf-ai-agentscript/references/agent-user-setup.md](../../sf-ai-agentscript/references/agent-user-setup.md)
+- Employee Agent visibility: [../sf-permissions/references/agent-access-guide.md](../sf-permissions/references/agent-access-guide.md)
+- Service Agent running user: [../sf-ai-agentscript/references/agent-user-setup.md](../sf-ai-agentscript/references/agent-user-setup.md)

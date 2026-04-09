@@ -7,7 +7,7 @@
 
 ## 1. Overview
 
-**Purpose**: After Phase 3 validation passes, run 3-5 smoke test utterances against the agent using `sf agent preview --authoring-bundle` to catch topic routing, action invocation, and grounding issues *before* the formal publish/activate/test cycle.
+**Purpose**: After Phase 3 validation passes, run 3-5 smoke test utterances against the agent using the programmatic `sf agent preview start/send/end --authoring-bundle` flow to catch topic routing, action invocation, and grounding issues *before* the formal publish/activate/test cycle.
 
 **Why this matters**: The `--authoring-bundle` flag compiles the `.agent` file server-side **without publishing** — no CustomerWebClient patch, no activation step. This enables ~15s iteration cycles (vs ~90s for publish+activate), letting Claude Code fix issues in a tight inner loop.
 
@@ -23,6 +23,7 @@
 |-------------|-----|---------------|
 | Agent published at least once | Authoring bundle must exist in org for `--authoring-bundle` to work | `sf agent validate authoring-bundle --api-name AgentName -o ORG --json` |
 | `sf` CLI v2.121.7+ | Required for `--authoring-bundle` and programmatic preview subcommands | `sf version --json` |
+| Explicit preview mode chosen | Programmatic authoring-bundle preview now requires a mode flag | Pass exactly one of `--simulate-actions` or `--use-live-actions` to `sf agent preview start --authoring-bundle ...` |
 | Valid `default_agent_user` in `.agent` file | Preview runs as this user | Query the exact username from the `.agent` config and confirm: `IsActive = true`, `UserType != AutomatedProcess`, and `Profile.Name = 'Einstein Agent User'` |
 | Target org authenticated | Preview needs valid session | `sf org display -o ORG_ALIAS --json` |
 
@@ -37,6 +38,7 @@
 ```bash
 SESSION_ID=$(sf agent preview start \
   --authoring-bundle AgentName \
+  --simulate-actions \
   --target-org ORG_ALIAS --json 2>/dev/null \
   | jq -r '.result.sessionId')
 
@@ -84,6 +86,7 @@ done
 ```bash
 TRACES_PATH=$(sf agent preview end \
   --session-id "$SESSION_ID" \
+  --authoring-bundle AgentName \
   --target-org ORG_ALIAS --json 2>/dev/null \
   | jq -r '.result.tracesPath')
 
@@ -267,14 +270,14 @@ topic returns:
 **Run preview:**
 
 ```bash
-SESSION_ID=$(sf agent preview start --authoring-bundle OrderSupport --target-org dev --json 2>/dev/null | jq -r '.result.sessionId')
+SESSION_ID=$(sf agent preview start --authoring-bundle OrderSupport --simulate-actions --target-org dev --json 2>/dev/null | jq -r '.result.sessionId')
 
 RESP1=$(sf agent preview send --session-id "$SESSION_ID" --authoring-bundle OrderSupport --utterance "Where is my order?" --target-org dev --json 2>/dev/null)
 PID1=$(echo "$RESP1" | jq -r '.result.messages[-1].planId')
 
 # ... send remaining utterances, capture plan IDs ...
 
-TRACES_PATH=$(sf agent preview end --session-id "$SESSION_ID" --target-org dev --json 2>/dev/null | jq -r '.result.tracesPath')
+TRACES_PATH=$(sf agent preview end --session-id "$SESSION_ID" --authoring-bundle OrderSupport --target-org dev --json 2>/dev/null | jq -r '.result.tracesPath')
 ```
 
 **Analyze trace for utterance 1:**
@@ -303,10 +306,10 @@ topic order_mgmt:
 **Re-run preview:**
 
 ```bash
-SESSION_ID=$(sf agent preview start --authoring-bundle OrderSupport --target-org dev --json 2>/dev/null | jq -r '.result.sessionId')
+SESSION_ID=$(sf agent preview start --authoring-bundle OrderSupport --simulate-actions --target-org dev --json 2>/dev/null | jq -r '.result.sessionId')
 RESP1=$(sf agent preview send --session-id "$SESSION_ID" --authoring-bundle OrderSupport --utterance "Where is my order?" --target-org dev --json 2>/dev/null)
 PID1=$(echo "$RESP1" | jq -r '.result.messages[-1].planId')
-TRACES_PATH=$(sf agent preview end --session-id "$SESSION_ID" --target-org dev --json 2>/dev/null | jq -r '.result.tracesPath')
+TRACES_PATH=$(sf agent preview end --session-id "$SESSION_ID" --authoring-bundle OrderSupport --target-org dev --json 2>/dev/null | jq -r '.result.tracesPath')
 
 jq '[.steps[] | select(.stepType == "TransitionStep") | .data.to]' "$TRACES_PATH/$PID1.json"
 # Output: ["order_mgmt"]  ← PASS!
@@ -344,8 +347,10 @@ get_order: @actions.Get_Order_Status
 | Error | Cause | Resolution |
 |-------|-------|------------|
 | **500 from `preview start`** | Agent never published (authoring bundle doesn't exist in org) | Run Phase 5 first (publish + activate), then return to Phase 3.5 |
+| **`preview start` fails immediately for authoring bundle** | Missing execution-mode flag | Re-run with exactly one of `--simulate-actions` or `--use-live-actions` |
 | **Empty traces directory** | `sf agent preview end` may not write traces in all CLI versions | Check `--json` output of `preview end` for inline trace data; upgrade CLI if needed |
 | **`sessionId` is null** | Auth expired or org session invalid | Re-authenticate: `sf org login web --alias ORG_ALIAS` |
+| **`SessionAmbiguous (5)`** | Multiple cached sessions exist for the same agent | Run `sf agent preview sessions --json`, pick the right session ID, and retry with `--session-id` |
 | **No TransitionStep in trace** | Agent used Topic Selector but didn't route to any topic | Topic descriptions are too vague — add more keywords |
 | **No FunctionStep in trace** | Planner didn't select any action | Check `available when:` guards and action descriptions |
 | **`preview send` timeout** | Preview compilation taking too long | `.agent` file may be too complex; simplify or wait longer |
@@ -413,7 +418,7 @@ Phase 3 passes (LSP + CLI validation clean)
 Derive 3-5 utterances from .agent file
     │
     ▼
-┌─► sf agent preview start --authoring-bundle AgentName
+┌─► sf agent preview start --authoring-bundle AgentName --simulate-actions
 │       │
 │       ▼
 │   sf agent preview send (for each utterance)

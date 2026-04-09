@@ -7,7 +7,7 @@ Guide to authentication methods for agent preview and API-based testing.
 
 ## Overview
 
-> **v2.121.7 Breaking Change**: The `--client-app` flag has been **removed** from `sf agent preview`. Live preview now uses standard org authentication — no Connected App required.
+> **Current CLI behavior**: `sf agent preview` uses standard org authentication — no Connected App or ECA is required for simulated or live preview.
 
 Agent testing uses **two different auth methods** depending on the testing approach:
 
@@ -22,6 +22,8 @@ Agent testing uses **two different auth methods** depending on the testing appro
 ## Preview Authentication
 
 Both simulated and live preview modes use standard Salesforce CLI authentication. No Connected App or ECA is required.
+
+For programmatic preview sessions, keep the auth model the same: published agents use standard org auth, and authoring-bundle sessions also use standard org auth but now require an explicit execution-mode flag on `sf agent preview start` (`--simulate-actions` or `--use-live-actions`).
 
 ### Authenticate to Your Org
 

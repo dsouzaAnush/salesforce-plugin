@@ -232,7 +232,7 @@ function subscribeToMessages(messagingAuth, conversationId, onMessage) {
 
 #### Option 2: Polling (Serverless Compatible)
 
-For serverless environments such as AWS Lambda or similar platforms:
+For Vercel, AWS Lambda, or other serverless environments:
 
 ```javascript
 class MessagePoller {
@@ -509,7 +509,7 @@ if (!this.seenMessageIds.has(message.id)) {
 SSE connections won't work on serverless platforms:
 
 ```javascript
-// ❌ WRONG: SSE on serverless edge/function platforms
+// ❌ WRONG: SSE on Vercel/Netlify Functions
 const eventSource = new EventSource(url); // Connection dies immediately
 
 // ✅ CORRECT: Use polling fallback
@@ -563,7 +563,7 @@ class MessagingClient {
 
 ## Deployment Platforms
 
-### Serverless platforms
+### Vercel
 
 ```javascript
 // api/messaging/auth.js

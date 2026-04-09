@@ -327,6 +327,20 @@ aura/MyComponent/
 
 ---
 
+## Recent CLI-Supported Metadata Additions
+
+Recent Salesforce CLI / SDR updates added support for several metadata types that were easy to miss in older reference material:
+
+| Current Type | Typical Source Shape | Notes |
+|--------------|----------------------|-------|
+| `CnfgItemSourceDefinition` | `cnfgItemSourceDefinitions/<Name>.cnfgItemSourceDefinition-meta.xml` | Replaces older `CnfgMgmtCiSourceDef` naming in source workflows |
+| `ExtlClntAppOauthSecuritySettings` | `extlClntAppOauthSecuritySettings/<Name>.ecaOauthSecurity-meta.xml` | Companion metadata for External Client Apps |
+| `UIBundle` | `uiBundles/<Name>/...` | Replaces older `WebApplication` naming in source workflows |
+
+When working from older examples, prefer the **current** metadata type and suffix names above.
+
+---
+
 ## sf CLI Metadata Commands
 
 ```bash
