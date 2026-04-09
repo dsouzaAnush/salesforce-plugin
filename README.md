@@ -6,6 +6,9 @@
 
 A dedicated plugin wrapper repo for Salesforce agent skills.
 
+This repository is packaged as a **Codex bundle plugin** and is also intended to
+be publishable to **ClawHub** as an OpenClaw-compatible bundle package.
+
 This repo is the plugin-side companion to the upstream skills repo at:
 
 - [dsouzaAnush/salesforce-skills](https://github.com/dsouzaAnush/salesforce-skills)
@@ -19,6 +22,14 @@ The split is intentional:
   - generated manifests
   - plugin-specific routing metadata
   - upstream sync workflow
+
+## Host compatibility
+
+- **Codex** reads the bundle from [`.codex-plugin/plugin.json`](.codex-plugin/plugin.json)
+- **ClawHub / OpenClaw** can publish and install the repo as a bundle package using the root [`package.json`](package.json)
+
+The root `package.json` is intentionally additive packaging metadata. It does not
+change the Codex plugin behavior or the shipped Salesforce skills.
 
 ## Layout
 

@@ -1,0 +1,33 @@
+{
+  "name": "openclaw-salesforce-plugin",
+  "version": "0.1.0",
+  "description": "Salesforce skill bundle plugin for Codex-compatible hosts and OpenClaw bundle installs.",
+  "license": "MIT",
+  "homepage": "https://github.com/dsouzaAnush/salesforce-plugin",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dsouzaAnush/salesforce-plugin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dsouzaAnush/salesforce-plugin/issues"
+  },
+  "author": "Anush Dsouza",
+  "keywords": [
+    "salesforce",
+    "codex",
+    "openclaw",
+    "bundle-plugin",
+    "skills",
+    "apex",
+    "lwc",
+    "flow"
+  ],
+  "files": [
+    ".codex-plugin",
+    "agents",
+    "assets",
+    "skills",
+    "README.md",
+    "salesforce.md"
+  ]
+}
