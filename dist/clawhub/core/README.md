@@ -75,26 +75,33 @@ python3 scripts/build_skill_manifest.py
 3. Build a publishable ClawHub artifact:
 
 ```bash
-python3 scripts/build_clawhub_bundle.py --profile core
+python3 scripts/build_clawhub_bundle.py
 ```
 
-The default `core` profile keeps the plugin Codex-compatible while avoiding the
-sync-only files that caused ClawHub bundle publishes to fail in practice. It
-includes:
+The default `curated` profile is the current publish-safe ClawHub shape. It
+keeps the plugin Codex-compatible and adds a small set of high-value reference
+docs for the main Salesforce skill families while avoiding the larger sync-only
+payloads that caused ClawHub bundle publishes to fail in practice.
+
+It includes:
 
 - root bundle manifests and plugin branding assets
 - root agent metadata
 - each skill's `SKILL.md`
 - each skill's `agents/openai.yaml`
+- a curated subset of reference docs for Apex, LWC, Flow, SOQL, metadata,
+  testing, deploy, integration, connected apps, and selected Agentforce skills
 
-Larger profiles are available for testing:
+Other profiles are available when you need stricter or larger artifacts:
 
+- `core`
 - `core-assets`
 - `core-refs-assets`
 - `runtime`
 
-At the moment, only the `core` profile is verified to publish cleanly to
-ClawHub for this repo.
+At the moment, both `core` and `curated` are verified to publish cleanly to
+ClawHub for this repo. `core` is the fallback minimal shape. `curated` is the
+recommended publish target.
 
 4. Run stale-build checks:
 
@@ -117,4 +124,4 @@ pytest --cov=scripts --cov-report=term-missing -q
 - Salesforce skills are synced from the local upstream checkout.
 - Generated artifacts are tracked and validated for drift.
 - Overlay metadata is intentionally minimal in v1, but the generated manifest now exposes structured routing metadata and prompt fixtures for eval-style checks.
-- ClawHub publishing should use the generated `dist/clawhub/core/` artifact instead of the full repo root.
+- ClawHub publishing should use the generated `dist/clawhub/curated/` artifact instead of the full repo root.
